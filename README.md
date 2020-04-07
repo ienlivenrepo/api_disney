@@ -17,7 +17,9 @@ The operations we expect to see would be:
  
 Spawn docker container for this micro-service:
 
-*  
+*  docker build --tag dogbreed .
+* docker run -p 8080:8080 dogbreed
+
 The information the Dog Breed App needs to function is:
 
 * A URL to a dog picture
