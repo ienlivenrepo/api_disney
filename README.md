@@ -7,18 +7,26 @@ Design and create a RESTful API that could be used to manage a list of dog image
 The operations we expect to see would be:
 
 * List all of the available dog pictures grouped by breed
-    /groupImagesByBreed
-* List all of the available dog pictures of a particular breed
-   /getImagesByBreed/{breedName}
-* Vote up and down a dog picture
-  /vote/{vote}/{imageID}
-* The details associated with a dog picture
-  /getImageDetails/{imageID}
- 
-Spawn docker container for this micro-service:
 
-*  docker build --tag dogbreed .
-* docker run -p 8080:8080 dogbreed
+GET Request:- http://localhost:8080/groupImagesByBreed
+
+* List all of the available dog pictures of a particular breed
+GET Request:- http://localhost:8080/getImagesByBreed/{breedName}
+
+{breedName} - name of the breed ,example:- Pug,Labrador,Retriever,Yorkie
+
+* Vote up and down a dog picture
+PUT Request:- http://localhost:8080/vote/{vote}/{imageID}
+
+{vote} - UP or DOWN
+
+{imageID} - ID of the image , example:- 1
+
+* The details associated with a dog picture
+GET request:-  http://localhost:8080/getImageDetails/{imageID}
+
+{imageID} - ID of the image , example:- 1
+ 
 
 The information the Dog Breed App needs to function is:
 
@@ -80,6 +88,11 @@ or you can run the jar file from the build:
 ```
 $ java -jar target/api_interview-0.1.0.jar
 ```
+or just in case you don't want to run by either ways , use containerised approach :-
+Spawn docker container for this micro-service:
+
+* docker build --tag dogbreed .
+* docker run -p 8080:8080 dogbreed
 
 # Build, Deployment and Running
 
