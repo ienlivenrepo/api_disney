@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -52,8 +53,10 @@ public class DogBreedControllerTest {
     public void voteImage() throws Exception{
         DogBreed dogBreed=DogBreed.builder().breedName("Labrador").breed_id(1).build();
         String jsonContent="{ \"clientID\": \"a1234\", \"vote\": \"UP\",\"dogImageID\":1 }";
-        when(dogBreedService.voteImage(VoteDetailsDTO.builder().clientID("1234").dogImageID(1).vote(UP).build())).thenReturn(DogImage.builder().vote(2).breed(dogBreed).imageUrl("http://i.imgur.com/eE29vX4.png").image_id(1).imageIdentity("eE29vX4").build());
-        mvc.perform(put("/vote").contentType(APPLICATION_JSON).content(jsonContent)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.imageUrl").value("http://i.imgur.com/eE29vX4.png"));
+        when(dogBreedService.voteImage(VoteDetailsDTO.builder().clientID("a1234").dogImageID(1).vote(UP).build())).thenReturn(DogImage.builder().vote(2).breed(dogBreed).imageUrl("http://i.imgur.com/eE29vX4.png").image_id(1).imageIdentity("eE29vX4").build());
+        mvc.perform(put("/vote")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonContent)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.imageUrl").value("http://i.imgur.com/eE29vX4.png"));
     }
 
     @Test
