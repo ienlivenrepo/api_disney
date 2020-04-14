@@ -16,11 +16,13 @@ GET Request:- http://localhost:8080/getImagesByBreed/{breedName}
 {breedName} - name of the breed ,example:- Pug,Labrador,Retriever,Yorkie
 
 * Vote up and down a dog picture
-PUT Request:- http://localhost:8080/vote/{vote}/{imageID}
-
-{vote} - UP or DOWN
-
-{imageID} - ID of the image , example:- 1
+PUT Request:- http://localhost:8080/vote
+Request Payload example:-
+{
+	"clientID":"a1234",
+	"vote": "UP",
+	"dogImageID":1
+}
 
 * The details associated with a dog picture
 GET request:-  http://localhost:8080/getImageDetails/{imageID}
