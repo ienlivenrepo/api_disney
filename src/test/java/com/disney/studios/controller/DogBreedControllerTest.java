@@ -1,7 +1,9 @@
 package com.disney.studios.controller;
 
+import com.disney.studios.constants.VoteEnum;
 import com.disney.studios.dto.DogBreedDTO;
 import com.disney.studios.dto.DogImageDTO;
+import com.disney.studios.dto.VoteDetailsDTO;
 import com.disney.studios.entity.DogBreed;
 import com.disney.studios.entity.DogImage;
 import com.disney.studios.service.DogBreedService;
@@ -17,7 +19,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.disney.studios.constants.VoteEnum.UP;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,8 +51,9 @@ public class DogBreedControllerTest {
     @Test
     public void voteImage() throws Exception{
         DogBreed dogBreed=DogBreed.builder().breedName("Labrador").breed_id(1).build();
-        when(dogBreedService.voteImage("UP",1)).thenReturn(DogImage.builder().vote(2).breed(dogBreed).imageUrl("http://i.imgur.com/eE29vX4.png").image_id(1).imageIdentity("eE29vX4").build());
-        mvc.perform(put("/vote/UP/1")).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.imageUrl").value("http://i.imgur.com/eE29vX4.png"));
+        String jsonContent="{ \"clientID\": \"a1234\", \"vote\": \"UP\",\"dogImageID\":1 }";
+        when(dogBreedService.voteImage(VoteDetailsDTO.builder().clientID("1234").dogImageID(1).vote(UP).build())).thenReturn(DogImage.builder().vote(2).breed(dogBreed).imageUrl("http://i.imgur.com/eE29vX4.png").image_id(1).imageIdentity("eE29vX4").build());
+        mvc.perform(put("/vote").contentType(APPLICATION_JSON).content(jsonContent)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.imageUrl").value("http://i.imgur.com/eE29vX4.png"));
     }
 
     @Test

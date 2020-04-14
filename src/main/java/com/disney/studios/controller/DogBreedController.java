@@ -2,6 +2,7 @@ package com.disney.studios.controller;
 
 import com.disney.studios.dto.DogBreedDTO;
 import com.disney.studios.dto.DogImageDTO;
+import com.disney.studios.dto.VoteDetailsDTO;
 import com.disney.studios.entity.DogImage;
 import com.disney.studios.service.IDogBreedService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -52,8 +55,8 @@ public class DogBreedController  implements IDogBreedController{
      * @throws Exception
      */
     @Override
-    public ResponseEntity<DogImage> voteImage(@PathVariable(value="vote") String vote, @PathVariable(value="imageID") Integer imageID) throws Exception {
-        DogImage dogImage=dogBreedService.voteImage(vote,imageID);
+    public ResponseEntity<DogImage> voteImage(@RequestBody VoteDetailsDTO voteDetailsDTO) throws Exception {
+        DogImage dogImage=dogBreedService.voteImage(voteDetailsDTO);
         return new ResponseEntity(dogImage,HttpStatus.OK);
     }
 

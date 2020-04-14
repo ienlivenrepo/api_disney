@@ -3,13 +3,18 @@ package com.disney.studios.service;
 import com.disney.studios.constants.VoteEnum;
 import com.disney.studios.dto.DogBreedDTO;
 import com.disney.studios.dto.DogImageDTO;
+import com.disney.studios.dto.VoteDetailsDTO;
 import com.disney.studios.entity.DogBreed;
 import com.disney.studios.entity.DogImage;
+import com.disney.studios.entity.VoteDetails;
 import com.disney.studios.repository.IDogBreedRepository;
 import com.disney.studios.repository.IDogImageRepository;
+import com.disney.studios.repository.IVoteImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +28,13 @@ import java.util.stream.Collectors;
 public class DogBreedService implements IDogBreedService {
     IDogBreedRepository dogBreedRepository;
     IDogImageRepository dogImageRepository;
+    IVoteImageRepository voteImageRepository;
 
     @Autowired
-    public DogBreedService(IDogBreedRepository dogBreedRepository,IDogImageRepository dogImageRepository){
+    public DogBreedService(IDogBreedRepository dogBreedRepository,IDogImageRepository dogImageRepository,IVoteImageRepository voteImageRepository){
         this.dogBreedRepository=dogBreedRepository;
         this.dogImageRepository=dogImageRepository;
+        this.voteImageRepository=voteImageRepository;
     }
 
     /**
@@ -68,30 +75,37 @@ public class DogBreedService implements IDogBreedService {
 
     /**
      *
-     * @param vote
-     * @param imageID
+     * @param voteDetails
      * @return DogImage
      * @throws Exception
      */
+    @Transactional
     @Override
-    public DogImage voteImage(String vote,Integer imageID)throws Exception {
+    public DogImage voteImage(VoteDetailsDTO voteDetails)throws Exception {
             try {
-                Optional<DogImage> image=dogImageRepository.findById(imageID);
-                if(image.isPresent()&&vote!=null) {
-                    DogImage dogImage = image.get();
-                    Integer voteCount = dogImage.getVote();
-                    if (VoteEnum.UP.name().equalsIgnoreCase(vote)) {
-                        dogImage.setVote(voteCount + 1);
-                        dogImageRepository.save(dogImage);
-                    } else if (VoteEnum.DOWN.name().equalsIgnoreCase(vote) && voteCount != 0) {
-                        dogImage.setVote(voteCount - 1);
-                    } else{
-                        throw new Exception("Invalid vote parameter");
+                VoteDetails voteDetail=voteImageRepository.findByClientID(voteDetails.getClientID());
+                if(voteDetail==null) {
+                    Optional<DogImage> image = dogImageRepository.findById(voteDetails.getDogImageID());
+                    String vote=voteDetails.getVote().name();
+                    if (image.isPresent() && voteDetails.getVote() != null) {
+                        DogImage dogImage = image.get();
+                        Integer voteCount = dogImage.getVote();
+                        if (VoteEnum.UP.name().equalsIgnoreCase(vote)) {
+                            dogImage.setVote(voteCount + 1);
+                            dogImageRepository.save(dogImage);
+                        } else if (VoteEnum.DOWN.name().equalsIgnoreCase(vote) && voteCount != 0) {
+                            dogImage.setVote(voteCount - 1);
+                        } else {
+                            throw new Exception("Invalid vote parameter");
+                        }
+                        DogImage updatedDogImage = dogImageRepository.save(dogImage);
+                        voteImageRepository.save(VoteDetails.builder().clientID(voteDetails.getClientID()).dogImageID(voteDetails.getDogImageID()).build());
+                        return updatedDogImage;
+                    } else {
+                        throw new EntityNotFoundException("Image does not exist for which vote is being casted");
                     }
-                    DogImage updatedDogImage=dogImageRepository.save(dogImage);
-                    return  updatedDogImage;
-                }else {
-                    throw new EntityNotFoundException("Image does not exist for which vote is being casted");
+                }else{
+                    throw new Exception("The client has already voted");
                 }
             }catch(EntityNotFoundException entityException){
                 throw entityException;
