@@ -5,6 +5,7 @@ import com.disney.studios.dto.DogImageDTO;
 import com.disney.studios.dto.VoteDetailsDTO;
 import com.disney.studios.entity.DogImage;
 import com.disney.studios.service.IDogBreedService;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class DogBreedController  implements IDogBreedController{
      * @return ResponseEntity<List<DogImage>>
      */
     @Override
-    public ResponseEntity<List<DogImage>>  getImagesByBreed(@PathVariable(value = "breedName",required = true) @NotEmpty String breedName)throws Exception {
+    public ResponseEntity<List<DogImage>>  getImagesByBreed(@ApiParam(value = "Breed Name ex:- Yorkie", required = true) @PathVariable(value = "breedName",required = true) @NotEmpty String breedName)throws Exception {
         return new ResponseEntity<List<DogImage>>(dogBreedService.getImagesByBreed(breedName).getImages(),HttpStatus.OK);
     }
 
@@ -54,7 +55,11 @@ public class DogBreedController  implements IDogBreedController{
      * @throws Exception
      */
     @Override
-    public ResponseEntity<DogImage> voteImage(@RequestBody VoteDetailsDTO voteDetailsDTO) throws Exception {
+    public ResponseEntity<DogImage> voteImage(@ApiParam(value = "Vote details with respect to a client/user ex:- {\n" +
+            "\t\"clientID\":\"a1234\",\n" +
+            "\t\"vote\": \"UP\",\n" +
+            "\t\"dogImageID\":1\n" +
+            "}", required = true)@RequestBody VoteDetailsDTO voteDetailsDTO) throws Exception {
         DogImage dogImage=dogBreedService.voteImage(voteDetailsDTO);
         return new ResponseEntity(dogImage,HttpStatus.OK);
     }
@@ -66,7 +71,7 @@ public class DogBreedController  implements IDogBreedController{
      * @throws Exception
      */
     @Override
-    public ResponseEntity<DogImageDTO> getImageDetails(@PathVariable(value="imageID") Integer imageID) throws Exception {
+    public ResponseEntity<DogImageDTO> getImageDetails(@ApiParam(value = "Dog's Image ID", required = true) @PathVariable(value="imageID") Integer imageID) throws Exception {
         return new ResponseEntity<DogImageDTO>(dogBreedService.getImageDetails(imageID),HttpStatus.OK);
     }
 }

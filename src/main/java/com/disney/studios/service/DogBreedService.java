@@ -83,7 +83,7 @@ public class DogBreedService implements IDogBreedService {
     @Override
     public DogImage voteImage(VoteDetailsDTO voteDetails)throws Exception {
             try {
-                VoteDetails voteDetail=voteImageRepository.findByClientID(voteDetails.getClientID());
+                VoteDetails voteDetail=voteImageRepository.findByClientIDAndDogImageID(voteDetails.getClientID(),voteDetails.getDogImageID());
                 if(voteDetail==null) {
                     Optional<DogImage> image = dogImageRepository.findById(voteDetails.getDogImageID());
                     String vote=voteDetails.getVote().name();
@@ -105,7 +105,7 @@ public class DogBreedService implements IDogBreedService {
                         throw new EntityNotFoundException("Image does not exist for which vote is being casted");
                     }
                 }else{
-                    throw new Exception("The client has already voted");
+                    throw new Exception("You have already voted for the given image");
                 }
             }catch(EntityNotFoundException entityException){
                 throw entityException;

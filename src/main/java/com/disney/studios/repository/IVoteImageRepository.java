@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IVoteImageRepository extends JpaRepository<VoteDetails,Integer> {
-    public VoteDetails findByClientID(String clientID);
+    public VoteDetails findByClientIDAndDogImageID(String clientID,Integer dogImageID);
 }

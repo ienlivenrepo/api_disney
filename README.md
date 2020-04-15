@@ -96,6 +96,10 @@ Spawn docker container for this micro-service:
 * docker build --tag dogbreed .
 * docker run -p 8080:8080 dogbreed
 
+# Api Documentation(Swagger)
+Use swagger url for online documentation for the api endpoints
+http://localhost:8080/swagger-ui.html
+
 # Build, Deployment and Running
 
 While this falls outside of the challenge, please consider the following as you get ready to discuss your solution with the team:
