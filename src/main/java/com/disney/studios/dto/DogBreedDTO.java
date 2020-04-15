@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- *
+ * Data transfer object to contain dog breed and list of dog images
  * Created by: indrajit singh
  */
 @Data

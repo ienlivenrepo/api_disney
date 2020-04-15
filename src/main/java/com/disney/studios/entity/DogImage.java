@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *
+ * Entity bean DogImage
  * Created by : Indrajit singh
  *
  */

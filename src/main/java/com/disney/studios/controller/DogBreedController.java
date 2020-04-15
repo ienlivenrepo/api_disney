@@ -48,9 +48,8 @@ public class DogBreedController  implements IDogBreedController{
     }
 
     /**
-     * Vote image by ID
-     * @param vote
-     * @param imageID
+     * Vote image based in clientID,imageID,vote
+     * @param voteDetailsDTO
      * @return ResponseEntity<DogImage>
      * @throws Exception
      */

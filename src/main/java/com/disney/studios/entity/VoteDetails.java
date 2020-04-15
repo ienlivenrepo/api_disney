@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Entity bean VoteDetails
+ */
 @Entity
 @Data
 @Builder

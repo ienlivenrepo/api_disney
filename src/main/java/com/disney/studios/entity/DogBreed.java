@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *
+ * Entity bean DogBreed
  * Created by : Indrajit singh
  *
  */

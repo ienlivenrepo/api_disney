@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- *
+ * Dog image data transfer object containing details about the dog
  * Created by : Indrajit singh
  *
  */

@@ -74,7 +74,7 @@ public class DogBreedService implements IDogBreedService {
     }
 
     /**
-     *
+     * Service Method to capture voting details
      * @param voteDetails
      * @return DogImage
      * @throws Exception
@@ -116,7 +116,7 @@ public class DogBreedService implements IDogBreedService {
     }
 
     /**
-     *
+     * Service method to get image details based on imageID
      * @param imageID
      * @return DogImageDTO
      * @throws Exception
